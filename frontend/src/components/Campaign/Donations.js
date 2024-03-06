@@ -5,17 +5,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faMoneyBillWave, faDonate, faIndianRupeeSign, faPrayingHands } from '@fortawesome/free-solid-svg-icons';
 
-const Donations = ({ campaignId, campaignName }) => { // Accept campaignId as a prop
+const Donations = ({ campaignId, campaignName }) => {
     const [donations, setDonations] = useState([]);
 
     const fetchDonations = useCallback(() => {
-        axios.get(`http://localhost:5000/donations/${campaignId}`) // Fetch donations for the specific campaign
+        axios.get(`http://localhost:5000/donations/${campaignId}`)
             .then((response) => {
                 const donationPromises = response.data.map(donation => {
-                    // Fetch backer details for each donation
                     return axios.get(`http://localhost:5000/userlist/${donation.backer_id}`)
                         .then((backerResponse) => {
-                            // Combine donation and backer data
                             return {
                                 ...donation,
                                 backer: backerResponse.data
@@ -30,11 +28,11 @@ const Donations = ({ campaignId, campaignName }) => { // Accept campaignId as a 
             .catch((error) => {
                 console.error('Error fetching data:', error);
             });
-    }, [campaignId]); // Include dependencies
+    }, [campaignId]);
 
     useEffect(() => {
         fetchDonations();
-    }, [fetchDonations]); // Include fetchDonations in the dependency array
+    }, [fetchDonations]);
 
     return (
         <div className="container mt-5">

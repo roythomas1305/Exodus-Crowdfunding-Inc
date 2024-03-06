@@ -26,13 +26,12 @@ import UpdateUser from './components/AdminPanel/UpdateUser';
 function App() {
   const [user, setUser] = useState(null);
 
-  // This useEffect runs once when the App component mounts
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, []); // Empty dependency array means this useEffect will only run once
+  }, []);
 
   return (
     <div className='App'>

@@ -17,7 +17,7 @@ const DonationForm = ({ showModal, handleClose, campaignId, fetchCampaigns }) =>
     e.preventDefault();
 
     const donationData = {
-      backer_id: user.id, // Include the user's ID
+      backer_id: user.id,
       campaign_id: campaignId,
       amount: amount
     };
@@ -27,8 +27,8 @@ const DonationForm = ({ showModal, handleClose, campaignId, fetchCampaigns }) =>
         if (response.status === 201) {
           console.log('Donation added successfully');
           alert('Donation added');
-          handleClose(); // Close the modal after successful submission
-          fetchCampaigns(); // Fetch campaigns again to update the state
+          handleClose();
+          fetchCampaigns();
         } else {
           console.error('Failed to add donation');
         }

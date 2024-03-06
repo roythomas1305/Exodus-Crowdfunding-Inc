@@ -9,7 +9,6 @@ function AdminDashboard() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
 
-  // Redirect if not logged in or not an admin
   if (!user || user.role !== 'admin') {
     navigate('/');
     return null;

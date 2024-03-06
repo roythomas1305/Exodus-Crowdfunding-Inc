@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrash, faPlus, faIndianRupeeSign, faMoneyBillWave, faCalendarAlt, faTag, faDonate } from '@fortawesome/free-solid-svg-icons';
-import DonationForm from './DonationForm'; // Import the new component
+import DonationForm from './DonationForm';
 import { UserContext } from '../Auth/UserContext';
 
 const CampaignList = () => {
@@ -31,7 +31,6 @@ const CampaignList = () => {
     axios.delete(`http://localhost:5000/deletecampaign/${id}`)
       .then((response) => {
         if (response.status === 200) {
-          // Update the campaign list after successful deletion
           setCampaigns(campaigns.filter(campaign => campaign.id !== id));
           console.log('Campaign deleted successfully');
         } else {
@@ -109,8 +108,6 @@ const CampaignList = () => {
 
         </div>
       </div>
-
-      {/* Render the DonationForm */}
       {user && <DonationForm showModal={showDonateModal} handleClose={handleDonateModalClose} campaignId={selectedCampaignId} fetchCampaigns={fetchCampaigns} />}
     </div>
   );

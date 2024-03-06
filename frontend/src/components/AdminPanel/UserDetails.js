@@ -18,7 +18,7 @@ const UserDetails = () => {
                     throw new Error('Error fetching user details');
                 }
                 const data = await response.json();
-                // Check if the user is an admin
+
                 if (user && user.role === 'admin') {
                     setUserDetails(data);
                 } else {
@@ -30,7 +30,7 @@ const UserDetails = () => {
         };
 
         fetchUserDetails();
-    }, [id, user]); // Add user to the dependency array
+    }, [id, user]);
 
     if (!userDetails) {
         return <div>You are Unauthorized</div>;

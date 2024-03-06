@@ -12,7 +12,7 @@ console.log(secret);
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'http://localhost:3000', // replace with your frontend domain
+    origin: 'http://localhost:3000',
     credentials: true
 }));
 
@@ -45,7 +45,7 @@ const connection = mysql.createConnection(options);
 const sessionStore = new MySQLStore({
     table: 'sessions',
     checkExpiration: true,
-    expiration: 3600 // 1 hour in seconds
+    expiration: 3600
 }, connection);
 
 app.use(session({
@@ -54,9 +54,9 @@ app.use(session({
     saveUninitialized: true,
     store: sessionStore,
     cookie: {
-        httpOnly: true, // Ensure security
-        secure: false, // Set to true if using HTTPS (recommended)
-        maxAge: 3600000 // 1 hour
+        httpOnly: true,
+        secure: false,
+        maxAge: 3600000
     }
 }));
 
@@ -72,7 +72,6 @@ app.post('/login', (req, res) => {
         const user = results[0];
         if (user) {
             if (user.password === password) {
-                // Set user information in the session
                 req.session.user = {
                     id: user.id,
                     username: user.username,
@@ -80,8 +79,6 @@ app.post('/login', (req, res) => {
                     role: user.role
                 };
                 req.session.save();
-                // res.cookie('connect.sid', req.sessionID, { httpOnly: true });
-                // Return the user data in the response
                 return res.json({ message: "Login successful", user: req.session.user });
             } else {
                 return res.status(401).json({ message: "Invalid credentials" });
@@ -117,8 +114,6 @@ app.post('/register', (req, res) => {
     });
 });
 
-// Route to create a new campaign
-// Only campaigners and admins can create campaigns
 app.post('/createcampaign', (req, res) => {
     const { title, description, goal_amount, deadline, category, campaigner_id } = req.body;
     dbconnection.query('INSERT INTO campaigns (title, description, goal_amount, deadline, category, campaigner_id) VALUES (?,?,?,?,?,?)',
@@ -133,8 +128,6 @@ app.post('/createcampaign', (req, res) => {
         });
 });
 
-// Route to update a campaign
-// Only the campaigner who created the campaign or an admin can update it
 app.put('/updatecampaign/:id', (req, res) => {
     const campaignId = req.params.id;
     console.log('Received update request for campaign ID:', req.params.id);
@@ -162,12 +155,9 @@ app.put('/updatecampaign/:id', (req, res) => {
     });
 });
 
-// Route to delete a campaign
-// Only the campaigner who created the campaign or an admin can delete it
 app.delete('/deletecampaign/:id', (req, res) => {
     const campaignId = req.params.id;
 
-    // Step 1: Delete associated donations
     dbconnection.query('DELETE FROM donations WHERE campaign_id = ?', [campaignId], (err, donationResults) => {
         if (err) {
             console.error("Error deleting donations:", err.message);
@@ -175,7 +165,6 @@ app.delete('/deletecampaign/:id', (req, res) => {
             return;
         }
 
-        // Step 2: Delete the campaign
         dbconnection.query('DELETE FROM campaigns WHERE id = ?', [campaignId], (err, campaignResults) => {
             if (err) {
                 console.error("Error deleting campaign:", err.message);
@@ -191,8 +180,6 @@ app.delete('/deletecampaign/:id', (req, res) => {
     });
 });
 
-// Route to make a donation
-// Only backers, campaigners, and admins can make donations
 app.post('/donations', (req, res) => {
     const { backer_id, campaign_id, amount } = req.body;
     console.log('Received donation request:', req.body);
@@ -221,8 +208,6 @@ app.post('/donations', (req, res) => {
         });
 });
 
-// Route to get all campaigns
-// Everyone who logs in should be able to see all campaigns
 app.get('/campaignlist', (req, res) => {
     dbconnection.query('SELECT * FROM campaigns', (err, results) => {
         if (err) {
@@ -234,12 +219,9 @@ app.get('/campaignlist', (req, res) => {
     });
 });
 
-// Route to view campaign details
-// Only the campaigner who created the campaign or an admin can view it
 app.get('/campaignlist/:id', (req, res) => {
     const campaignId = req.params.id;
 
-    // Query the database to retrieve campaign details for the given ID
     dbconnection.query('SELECT * FROM campaigns WHERE id = ?', [campaignId], (err, results) => {
         if (err) {
             console.error("Error:", err.message);
@@ -254,8 +236,6 @@ app.get('/campaignlist/:id', (req, res) => {
     });
 });
 
-// Route to get donations for a specific campaign
-// Campaigners can view donations for their campaigns, and admins can view all donations
 app.get('/donations/:campaign_id', (req, res) => {
     const campaignId = req.params.campaign_id;
     dbconnection.query('SELECT * FROM donations WHERE campaign_id = ?', [campaignId], (err, results) => {
@@ -268,8 +248,6 @@ app.get('/donations/:campaign_id', (req, res) => {
     });
 });
 
-// Route to get all users
-// Only an admin should be able to see all users
 app.get('/userlist', (req, res) => {
     dbconnection.query('SELECT * FROM users', (err, results) => {
         if (err) {
@@ -281,8 +259,6 @@ app.get('/userlist', (req, res) => {
     });
 });
 
-// Route to delete a user
-// Only an admin can delete a user
 app.delete('/deleteuser/:id', (req, res) => {
     const userId = req.params.id;
 
@@ -300,12 +276,9 @@ app.delete('/deleteuser/:id', (req, res) => {
     });
 });
 
-// Route to view user details
-// Only an admin should be able to see user details
 app.get('/userlist/:id', (req, res) => {
     const userId = req.params.id;
 
-    // Query the database to retrieve user details for the given ID
     dbconnection.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
         if (err) {
             console.error("Error:", err.message);
@@ -320,8 +293,6 @@ app.get('/userlist/:id', (req, res) => {
     });
 });
 
-// Route to create a new user
-// Only an admin can create users
 app.post('/createuser', (req, res) => {
     const { username, email, password, role } = req.body;
     dbconnection.query('INSERT INTO users (username, email, password, role) VALUES (?,?,?,?)',
@@ -336,8 +307,6 @@ app.post('/createuser', (req, res) => {
         });
 });
 
-// Route to update a user
-// Only an admin can update a user
 app.put('/updateuser/:id', (req, res) => {
     const userId = req.params.id;
     const { username, email, password, role } = req.body;

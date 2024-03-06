@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { UserContext } from './UserContext'; // import UserContext
+import { UserContext } from './UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faEdit, faEnvelope, faLock, faUser, faUsersCog } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,18 +15,17 @@ function Login() {
   });
 
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext); // use UserContext
+  const { setUser } = useContext(UserContext);
 
   const handleSubmit = async () => {
     try {
       const response = await axios.post('http://localhost:5000/login', login);
 
       if (response.data.message === "Login successful") {
-        setUser(response.data.user); // set user data on successful login
-        localStorage.setItem('user', JSON.stringify(response.data.user)); // store user data in localStorage
+        setUser(response.data.user);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         document.cookie = response.headers['set-cookie'];
 
-        // Navigate based on user role
         if (response.data.user.role === 'admin') {
           navigate('/admindashboard');
         } else {

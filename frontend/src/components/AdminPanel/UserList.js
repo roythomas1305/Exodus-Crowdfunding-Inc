@@ -33,7 +33,6 @@ const UserList = () => {
         axios.delete(`http://localhost:5000/deleteuser/${id}`)
             .then((response) => {
                 if (response.status === 200) {
-                    // Update the user list after successful deletion
                     setUsers(users.filter(user => user.id !== id));
                     console.log('User deleted successfully');
                 } else {

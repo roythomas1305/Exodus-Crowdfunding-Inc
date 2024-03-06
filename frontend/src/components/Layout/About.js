@@ -4,7 +4,6 @@ import { Container, Row, Col } from 'react-bootstrap';
 const About = () => {
   return (
     <Container className="my-5 py-4">
-      {/* Hero Section */}
       <Row className="align-items-center">
         <Col md={12}>
           <h1>Exodus Crowdfunding Inc.</h1>

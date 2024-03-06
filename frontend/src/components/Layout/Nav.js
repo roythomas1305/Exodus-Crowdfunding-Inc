@@ -3,19 +3,19 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import axios from 'axios';
-import { UserContext } from '../Auth/UserContext'; // import UserContext
-import { Link } from 'react-router-dom'; // import Link
+import { UserContext } from '../Auth/UserContext';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faContactCard, faCrown, faDonate, faEdit, faHome, faInfoCircle, faSignIn, faSignOut } from '@fortawesome/free-solid-svg-icons';
 
 function CollapsibleExample() {
-  const { user, setUser } = useContext(UserContext); // use UserContext
+  const { user, setUser } = useContext(UserContext);
 
   const handleLogout = async () => {
     try {
       await axios.post('http://localhost:5000/logout');
       setUser(null);
-      localStorage.removeItem('user'); // clear user data from localStorage
+      localStorage.removeItem('user');
     } catch (error) {
       console.error('Error logging out', error);
     }

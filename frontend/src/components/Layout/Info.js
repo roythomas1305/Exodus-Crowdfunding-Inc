@@ -6,7 +6,6 @@ import { faHandFist } from '@fortawesome/free-solid-svg-icons';
 const Info = () => {
     return (
         <Container className="my-5 py-4">
-            {/* Hero Section */}
             <Row className="align-items-center">
                 <Col md={12}>
                     <h1>Empowering Changemakers, Catalyzing Solutions</h1>
@@ -29,7 +28,6 @@ const Info = () => {
                 </Col>
             </Row>
 
-            {/* Core Values Section */}
             <Row className="mt-5">
                 <Col>
                     <h2 className="text-center">Our Core Values</h2>
@@ -51,7 +49,6 @@ const Info = () => {
     );
 };
 
-// Define your core values and impact stories as arrays
 const coreValues = [
     {
         title: 'Empowerment',

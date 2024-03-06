@@ -19,7 +19,6 @@ const CampaignDetails = () => {
                     throw new Error('Error fetching campaign details');
                 }
                 const data = await response.json();
-                // Check if the user is the campaigner or an admin
                 if (user && (user.role === 'admin' || user.id === data.campaigner_id)) {
                     setCampaign(data);
                 } else {
@@ -31,7 +30,7 @@ const CampaignDetails = () => {
         };
 
         fetchCampaignDetails();
-    }, [id, user]); // Add user to the dependency array
+    }, [id, user]);
 
     if (!campaign) {
         return <div><h1 className='text-danger'>You are Unauthorized!!!!</h1></div>;

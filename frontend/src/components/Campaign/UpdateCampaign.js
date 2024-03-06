@@ -3,14 +3,14 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { UserContext } from '../Auth/UserContext'; // Import UserContext
+import { UserContext } from '../Auth/UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faHeading, faParagraph, faMoneyBillWave, faCalendarAlt, faTag } from '@fortawesome/free-solid-svg-icons';
 
 const UpdateCampaign = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { user } = useContext(UserContext); // Use UserContext
+    const { user } = useContext(UserContext);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -20,18 +20,18 @@ const UpdateCampaign = () => {
         category: ''
     });
 
-    const fetchCampaignDetails = useCallback(async () => { // Wrap with useCallback
+    const fetchCampaignDetails = useCallback(async () => {
         try {
             const response = await axios.get(`http://localhost:5000/campaignlist/${id}`);
             setFormData(response.data);
         } catch (error) {
             console.error('Error fetching campaign details:', error);
         }
-    }, [id]); // Include dependencies
+    }, [id]);
 
     useEffect(() => {
         fetchCampaignDetails();
-    }, [fetchCampaignDetails]); // Include fetchCampaignDetails in the dependency array
+    }, [fetchCampaignDetails]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
